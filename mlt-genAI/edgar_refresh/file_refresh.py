@@ -1,15 +1,17 @@
 import json
 import requests
 import boto3
-from secEdgar import SecEdgar
+import os
 
-
+BUCKET_NAME = os.environ['BUCKET_NAME']
 
 def lambda_handler(event, context):
-    sec = SecEdgar("https://www.sec.gov/files/company_tickers.json")
-    s3 = boto3.client('s3')
+    url = "https://www.sec.gov/files/company_tickers.json"
     response = requests.get("https://www.sec.gov/files/company_tickers.json", headers={'user-agent': 'MLT dennis7ni@gmail.com'})
-    s3.put_object(Bucket='mlt-genai', Key='company_tickers.json', Body=response.content)
+    response.raise_for_status() 
+
+    s3 = boto3.client('s3')
+    s3.put_object(Bucket=BUCKET_NAME, Key='company_tickers.json', Body=response.content)
 
     return {
         "statusCode": 200,

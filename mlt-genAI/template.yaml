@@ -40,6 +40,8 @@ Resources:
 
   EdgarBucket:
     Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
     Properties:
       VersioningConfiguration:
         Status: Enabled
